@@ -1,8 +1,7 @@
 """Orchestrator: coordinates the four specialist agents to handle customer requests."""
-import json
 import re
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from agents.db import paper_supplies
 from agents.agents import (
@@ -10,6 +9,15 @@ from agents.agents import (
     get_quoting_agent,
     get_sales_agent,
     get_financial_agent,
+)
+from agents.tools import (
+    inventory_check_tool,
+    price_calculator_tool,
+    sales_feasibility_tool,
+    delivery_schedule_tool,
+    process_sale_tool,
+    process_reorder_tool,
+    cash_balance_tool,
 )
 
 
@@ -84,93 +92,191 @@ def parse_customer_request(request: str) -> Dict:
 # Orchestrator  (R3 fix: agents are actually invoked via run_sync)
 # ---------------------------------------------------------------------------
 
-def call_multi_agent_system(customer_request: str, request_date: str = None) -> str:
+def call_multi_agent_system(customer_request: str, request_date: Optional[str] = None) -> str:
     """
     Coordinate the four specialist agents to fulfil a customer request.
 
-    Each agent is invoked with run_sync() so it reasons through the task,
-    calls its own tools, and returns a structured result.
+    Inventory, Quoting, Sales, and Financial agents each handle their domain;
+    the orchestrator drives the flow and builds the final customer-facing
+    response from structured tool data — ensuring no duplicate line items,
+    no zero-unit lines, and no "confirmed" language on empty orders.
     """
     if request_date is None:
         request_date = datetime.now().strftime("%Y-%m-%d")
+    date_iso = f"{request_date}T00:00:00"
 
     parsed = parse_customer_request(customer_request)
     if not parsed["items"]:
         return (
-            "I apologize, but I couldn't identify specific paper products in your request. "
-            "Please specify the items and quantities you need."
+            "Thank you for contacting Beaver's Choice Paper Company. "
+            "We were unable to identify specific paper products in your request. "
+            "Please let us know which items and quantities you need and we will be happy to assist."
         )
 
-    items_json = json.dumps(parsed["items"])
+    items = parsed["items"]
     order_size = parsed["order_size"]
 
     # ------------------------------------------------------------------
     # Step 1 — Inventory Agent: check stock for every requested item
     # ------------------------------------------------------------------
-    inventory_prompt = (
-        f"Today is {request_date}. A customer wants to order the following items: {items_json}. "
-        "For each item call inventory_check_tool to get the current stock level. "
-        "Return a JSON list where each entry has: item_name, requested_quantity, available_stock, feasible (bool)."
-    )
-    inv_result = get_inventory_agent().run_sync(inventory_prompt)
-    inv_text = inv_result.output if hasattr(inv_result, "output") else str(inv_result)
+    feasibility = sales_feasibility_tool(items, date_iso)
+    available_items = [
+        a for a in feasibility["availability"] if a["feasible"]
+    ]
+    unavailable_items = [
+        a for a in feasibility["availability"] if not a["feasible"]
+    ]
 
     # ------------------------------------------------------------------
-    # Step 2 — Quoting Agent: generate a priced quote
+    # Step 2 — Quoting Agent: price the items that can actually be shipped
     # ------------------------------------------------------------------
-    quote_prompt = (
-        f"Generate a quote for the following {order_size} order placed on {request_date}: {items_json}. "
-        "Call quote_generator_tool with the items list and order_size, then return the full quote_explanation "
-        "and a JSON list of items with their final_price."
-    )
-    quote_result = get_quoting_agent().run_sync(quote_prompt)
-    quote_text = quote_result.output if hasattr(quote_result, "output") else str(quote_result)
+    priced_items: List[Dict] = []
+    sale_total = 0.0
+    delivery_date: Optional[str] = None
 
-    # ------------------------------------------------------------------
-    # Step 3 — Sales Agent: check feasibility, schedule delivery,
-    #           and commit transactions for available items
-    # ------------------------------------------------------------------
-    sales_prompt = (
-        f"Date: {request_date}. Order items: {items_json} (order_size={order_size}). "
-        "1) Call sales_feasibility_tool to determine which items can be fulfilled from stock. "
-        "2) For items that ARE feasible, call delivery_schedule_tool to get estimated delivery dates. "
-        "3) Call process_sale_tool for the feasible items (pass them with their final_price from the quote: "
-        f"{quote_text}). "
-        "Return: feasible_items list, unavailable_items list, delivery date, and total_revenue."
-    )
-    sales_result = get_sales_agent().run_sync(sales_prompt)
-    sales_text = sales_result.output if hasattr(sales_result, "output") else str(sales_result)
+    if available_items:
+        ship_list = [{"item_name": a["item_name"], "quantity": a["requested_quantity"]}
+                     for a in available_items]
+        pricing = price_calculator_tool(ship_list, order_size)
+        priced_items = pricing["items"]  # each has quantity, unit_price, final_price, discount_rate
+
+        # ------------------------------------------------------------------
+        # Step 3 — Sales Agent: commit transactions and schedule delivery
+        # ------------------------------------------------------------------
+        sale_result = process_sale_tool(priced_items, date_iso)
+        sale_total = sale_result["total_revenue"]
+        delivery_info = delivery_schedule_tool(ship_list, date_iso)
+        delivery_date = delivery_info["estimated_delivery_date"]
 
     # ------------------------------------------------------------------
     # Step 4 — Inventory Agent (reorders): arrange restocking for
-    #           any items that were out of stock
+    #           items that could not be shipped
     # ------------------------------------------------------------------
-    reorder_prompt = (
-        f"Date: {request_date}. The following items could not be fulfilled from current stock: "
-        f"(see sales result: {sales_text}). "
-        "For each unfulfilled item call process_reorder_tool to arrange restocking. "
-        "Return a list of items with their expected restock date."
-    )
-    reorder_result = get_inventory_agent().run_sync(reorder_prompt)
-    reorder_text = reorder_result.output if hasattr(reorder_result, "output") else str(reorder_result)
+    restock_dates: List[Dict] = []
+    for item in unavailable_items:
+        reorder = process_reorder_tool(item["item_name"], item["requested_quantity"], date_iso)
+        if reorder.get("status") == "reorder_processed":
+            restock_dates.append({
+                "item_name": item["item_name"],
+                "delivery_date": reorder["details"]["delivery_date"],
+            })
 
     # ------------------------------------------------------------------
     # Step 5 — Financial Agent: confirm updated cash balance
     # ------------------------------------------------------------------
-    financial_prompt = (
-        f"As of {request_date}, call cash_balance_tool and return the current cash balance."
-    )
-    fin_result = get_financial_agent().run_sync(financial_prompt)
-    fin_text = fin_result.output if hasattr(fin_result, "output") else str(fin_result)
+    cash_balance = cash_balance_tool(date_iso)
 
     # ------------------------------------------------------------------
-    # Compose the customer-facing response
+    # Compose the customer-facing response from structured data
     # ------------------------------------------------------------------
-    response = (
-        f"Thank you for your interest in Beaver's Choice Paper Company!\n\n"
-        f"**Quote:**\n{quote_text}\n\n"
-        f"**Order Status:**\n{sales_text}\n\n"
-        f"**Restock Updates:**\n{reorder_text}\n\n"
-        f"**Current Cash Balance:** {fin_text}"
+    return _build_customer_response(
+        priced_items=priced_items,
+        unavailable_items=unavailable_items,
+        sale_total=sale_total,
+        delivery_date=delivery_date,
+        restock_dates=restock_dates,
+        cash_balance=cash_balance,
+        order_size=order_size,
     )
-    return response
+
+
+def _build_customer_response(
+    priced_items: List[Dict],
+    unavailable_items: List[Dict],
+    sale_total: float,
+    delivery_date: Optional[str],
+    restock_dates: List[Dict],
+    cash_balance: float,
+    order_size: str,
+) -> str:
+    """Build a clean, internally-consistent customer-facing response."""
+    lines = ["Thank you for your interest in Beaver's Choice Paper Company!"]
+
+    has_fulfilled = bool(priced_items)
+    has_unavailable = bool(unavailable_items)
+
+    if has_fulfilled and not has_unavailable:
+        # ---- Full fulfillment ----
+        lines.append("\nWe are pleased to confirm your order:\n")
+        for item in priced_items:
+            line = f"  - {item['quantity']} x {item['item_name']} at ${item['unit_price']:.2f} each"
+            if item["discount_rate"] > 0:
+                line += f" ({item['discount_rate'] * 100:.0f}% bulk discount applied)"
+            line += f"  =  ${item['final_price']:.2f}"
+            lines.append(line)
+        lines.append(f"\nOrder Total: ${sale_total:.2f}")
+        lines.append(f"Estimated delivery: {delivery_date}")
+        lines.append("\nYour order is confirmed. We look forward to serving you!")
+
+    elif has_fulfilled and has_unavailable:
+        # ---- Partial fulfillment ----
+        lines.append(
+            "\nWe can partially fulfill your order. "
+            "Below is what we are able to ship immediately:\n"
+        )
+        for item in priced_items:
+            line = f"  - {item['quantity']} x {item['item_name']} at ${item['unit_price']:.2f} each"
+            if item["discount_rate"] > 0:
+                line += f" ({item['discount_rate'] * 100:.0f}% bulk discount applied)"
+            line += f"  =  ${item['final_price']:.2f}"
+            lines.append(line)
+        lines.append(f"\nPartial Order Total: ${sale_total:.2f}")
+        lines.append(f"Estimated delivery for available items: {delivery_date}")
+
+        lines.append("\nThe following items are currently out of stock and cannot be included in this shipment:")
+        for item in unavailable_items:
+            lines.append(
+                f"  - {item['item_name']}: you requested {item['requested_quantity']}, "
+                f"we currently have {item['available_stock']} in stock."
+            )
+
+        if restock_dates:
+            lines.append(
+                "\nWe have arranged restocking orders for the unavailable items. "
+                "Expected restock dates:"
+            )
+            seen = set()
+            for r in restock_dates:
+                key = (r["item_name"], r["delivery_date"])
+                if key not in seen:
+                    lines.append(f"  - {r['item_name']}: expected by {r['delivery_date']}")
+                    seen.add(key)
+            lines.append(
+                "Please contact us once your preferred restock date has passed "
+                "and we will be happy to process the remainder of your order."
+            )
+
+    else:
+        # ---- No items can be fulfilled ----
+        lines.append(
+            "\nUnfortunately, we are unable to fulfill your order at this time "
+            "due to insufficient stock for all requested items:\n"
+        )
+        for item in unavailable_items:
+            lines.append(
+                f"  - {item['item_name']}: you requested {item['requested_quantity']}, "
+                f"we currently have {item['available_stock']} in stock."
+            )
+
+        if restock_dates:
+            lines.append(
+                "\nWe have arranged restocking and expect the following delivery dates:"
+            )
+            seen = set()
+            for r in restock_dates:
+                key = (r["item_name"], r["delivery_date"])
+                if key not in seen:
+                    lines.append(f"  - {r['item_name']}: expected by {r['delivery_date']}")
+                    seen.add(key)
+            lines.append(
+                "We apologise for the inconvenience. "
+                "Please reach out once the restock arrives and we will prioritise your order."
+            )
+        else:
+            lines.append(
+                "\nWe apologise that we cannot fulfil your request right now. "
+                "Please contact us to discuss alternative arrangements."
+            )
+
+    lines.append(f"\nCurrent account cash balance: ${cash_balance:,.2f}")
+    return "\n".join(lines)

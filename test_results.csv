@@ -1,21 +1,280 @@
 request_id,request_date,cash_balance,inventory_value,response
-1,2025-04-01,45129.3,4870.3,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your small order request! Your order includes: 200 A4 paper at $0.05 each (with 2% bulk discount), 100 Cardstock at $0.15 each, 100 Colored paper at $0.10 each, 200 A4 paper at $0.05 each (with 2% bulk discount), 100 Colored paper at $0.10 each, 100 Cardstock at $0.15 each. Total cost: $69.60 Estimated delivery: 2025-04-05. Order confirmed! Total: $69.60"
-2,2025-04-03,45129.3,4870.3,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. None of the requested items are currently available in sufficient quantities."
-3,2025-04-04,45104.3,4895.3,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 0 Rolls of banner paper (36-inch width) at $2.50 each, 0 Rolls of banner paper (36-inch width) at $2.50 each. Total cost: $0.00 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of A4 paper: 2025-04-08. "
-4,2025-04-05,45128.8,4870.3,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your small order request! Your order includes: 250 A4 paper at $0.05 each (with 2% bulk discount), 250 A4 paper at $0.05 each (with 2% bulk discount). Total cost: $24.50 Estimated delivery: 2025-04-09. Order confirmed! Total: $24.50"
-5,2025-04-05,45038.8,4870.3,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 500 Colored paper at $0.10 each (with 2% bulk discount), 300 Cardstock at $0.15 each (with 2% bulk discount), 500 Colored paper at $0.10 each (with 2% bulk discount), 300 Cardstock at $0.15 each (with 2% bulk discount). Total cost: $186.20 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Decorative paper: 2025-04-09. "
-6,2025-04-06,44978.8,4895.3,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! We've applied bulk discounts to provide you with the best value. Your order includes: 200 Cardstock at $0.15 each (with 2% bulk discount), 300 Rolls of banner paper (36-inch width) at $2.50 each (with 2% bulk discount), 200 Cardstock at $0.15 each (with 2% bulk discount). Total cost: $793.80 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Construction paper: 2025-04-10. Expected restock of A4 paper: 2025-04-10. "
-7,2025-04-07,44773.8,4920.3,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 200 Cardstock at $0.15 each (with 2% bulk discount), 200 Cardstock at $0.15 each (with 2% bulk discount). Total cost: $58.80 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of A4 paper: 2025-04-11. Expected restock of Matte paper: 2025-04-11. "
-8,2025-04-07,44526.200000000004,5167.899999999999,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 500 A4 paper at $0.05 each (with 2% bulk discount), 500 A4 paper at $0.05 each (with 2% bulk discount). Total cost: $49.00 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of A4 paper: 2025-04-11. Expected restock of Colored paper: 2025-04-14. Expected restock of A4 paper: 2025-04-14. "
-9,2025-04-07,44486.200000000004,5167.899999999999,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 200 A4 paper at $0.05 each (with 2% bulk discount), 100 Glossy paper at $0.20 each, 200 A4 paper at $0.05 each (with 2% bulk discount), 100 Glossy paper at $0.20 each. Total cost: $59.60 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Recycled paper: 2025-04-11. "
-13,2025-04-08,44558.950000000004,5092.899999999999,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your medium order request! Your order includes: 500 A4 paper at $0.05 each (with 3% bulk discount), 500 A4 paper at $0.05 each (with 3% bulk discount), 500 A4 paper at $0.05 each (with 3% bulk discount). Total cost: $72.75 Estimated delivery: 2025-04-12. Order confirmed! Total: $72.75"
-12,2025-04-08,44528.950000000004,5092.899999999999,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 200 Cardstock at $0.15 each (with 2% bulk discount), 200 Cardstock at $0.15 each (with 2% bulk discount). Total cost: $58.80 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Standard copy paper: 2025-04-12. Expected restock of Paper napkins: 2025-04-12. "
-10,2025-04-08,44819.950000000004,4792.9,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your medium order request! Your order includes: 500 Glossy paper at $0.20 each (with 3% bulk discount), 500 Glossy paper at $0.20 each (with 3% bulk discount), 500 Glossy paper at $0.20 each (with 3% bulk discount). Total cost: $291.00 Estimated delivery: 2025-04-12. Order confirmed! Total: $291.00"
-11,2025-04-08,44868.950000000004,4742.9,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your small order request! Your order includes: 500 A4 paper at $0.05 each (with 2% bulk discount), 500 A4 paper at $0.05 each (with 2% bulk discount). Total cost: $49.00 Estimated delivery: 2025-04-12. Order confirmed! Total: $49.00"
-14,2025-04-09,46093.950000000004,3492.9,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your small order request! We've applied bulk discounts to provide you with the best value. Your order includes: 0 A4 paper at $0.05 each, 0 Poster paper at $0.25 each, 0 A4 paper at $0.05 each, 0 Poster paper at $0.25 each, 500 Rolls of banner paper (36-inch width) at $2.50 each (with 2% bulk discount). Total cost: $1225.00 Estimated delivery: 2025-04-09. Order confirmed! Total: $1225.00"
-15,2025-04-12,46093.950000000004,3492.9,"Thank you for your interest in Beaver's Choice Paper Company! We can fulfill your order. Thank you for your small order request! Your order includes: 0 A4 paper at $0.05 each, 0 Colored paper at $0.10 each, 0 A4 paper at $0.05 each, 0 Colored paper at $0.10 each. Total cost: $0.00 Estimated delivery: 2025-04-12. Order confirmed! Total: $0.00"
-16,2025-04-13,45968.950000000004,3492.9,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 500 A4 paper at $0.05 each (with 2% bulk discount), 200 Construction paper at $0.07 each (with 2% bulk discount), 500 A4 paper at $0.05 each (with 2% bulk discount), 200 Construction paper at $0.07 each (with 2% bulk discount). Total cost: $76.44 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Poster paper: 2025-04-17. "
-17,2025-04-14,45833.950000000004,3517.9,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 500 Colored paper at $0.10 each (with 2% bulk discount), 500 Colored paper at $0.10 each (with 2% bulk discount), 500 Paper plates at $0.10 each (with 2% bulk discount), 500 Paper plates at $0.10 each (with 2% bulk discount). Total cost: $196.00 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of A4 paper: 2025-04-18. Expected restock of Paper cups: 2025-04-18. Expected restock of Paper napkins: 2025-04-21. "
-18,2025-04-14,45738.950000000004,3592.9,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. We can offer a partial order: Thank you for your small order request! Your order includes: 200 Colored paper at $0.10 each (with 2% bulk discount), 200 Colored paper at $0.10 each (with 2% bulk discount). Total cost: $39.20 We can arrange for the remaining items to be delivered once we receive new stock. Expected restock of Cardstock: 2025-04-18. Expected restock of Standard copy paper: 2025-04-18. "
-19,2025-04-15,45738.950000000004,3592.9,"Thank you for your interest in Beaver's Choice Paper Company! Unfortunately, we cannot fulfill your complete order due to insufficient inventory. None of the requested items are currently available in sufficient quantities."
-20,2025-04-17,45738.950000000004,3592.9,"I apologize, but I couldn't identify specific paper products in your request. Please specify the items and quantities you need."
+1,2025-04-01,45059.7,4940.299999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 200 x A4 paper at $0.05 each (2% bulk discount applied)  =  $9.80
+  - 100 x Cardstock at $0.15 each  =  $15.00
+  - 100 x Colored paper at $0.10 each  =  $10.00
+
+Order Total: $34.80
+Estimated delivery: 2025-04-05
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $45,094.50"
+2,2025-04-03,45094.5,4905.299999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+Unfortunately, we are unable to fulfill your order at this time due to insufficient stock for all requested items:
+
+  - Poster paper: you requested 500, we currently have 0 in stock.
+  - Party streamers: you requested 300, we currently have 0 in stock.
+
+We have arranged restocking and expect the following delivery dates:
+  - Poster paper: expected by 2025-04-07
+  - Party streamers: expected by 2025-04-07
+We apologise for the inconvenience. Please reach out once the restock arrives and we will prioritise your order.
+
+Current account cash balance: $44,944.50"
+3,2025-04-04,44944.5,4905.299999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 500 x Rolls of banner paper (36-inch width) at $2.50 each (2% bulk discount applied)  =  $1225.00
+
+Order Total: $1225.00
+Estimated delivery: 2025-04-08
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $46,169.50"
+4,2025-04-05,46169.5,3655.2999999999997,"Thank you for your interest in Beaver's Choice Paper Company!
+
+Unfortunately, we are unable to fulfill your order at this time due to insufficient stock for all requested items:
+
+  - A4 paper: you requested 250, we currently have 72 in stock.
+
+We have arranged restocking and expect the following delivery dates:
+  - A4 paper: expected by 2025-04-09
+We apologise for the inconvenience. Please reach out once the restock arrives and we will prioritise your order.
+
+Current account cash balance: $46,144.50"
+5,2025-04-05,46169.5,3655.2999999999997,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 500 x Colored paper at $0.10 each (2% bulk discount applied)  =  $49.00
+  - 300 x Cardstock at $0.15 each (2% bulk discount applied)  =  $44.10
+
+Partial Order Total: $93.10
+Estimated delivery for available items: 2025-04-09
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Decorative paper: you requested 200, we currently have 0 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Decorative paper: expected by 2025-04-09
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $46,147.60"
+6,2025-04-06,46147.6,3585.2999999999997,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 300 x A4 paper at $0.05 each (3% bulk discount applied)  =  $14.55
+
+Partial Order Total: $14.55
+Estimated delivery for available items: 2025-04-10
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Construction paper: you requested 500, we currently have 0 in stock.
+  - Cardstock: you requested 200, we currently have 195 in stock.
+  - Rolls of banner paper (36-inch width): you requested 300, we currently have 46 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Construction paper: expected by 2025-04-10
+  - Cardstock: expected by 2025-04-10
+  - Rolls of banner paper (36-inch width): expected by 2025-04-10
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $44,802.15"
+7,2025-04-07,44802.15000000001,4895.3,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 200 x Cardstock at $0.15 each (3% bulk discount applied)  =  $29.10
+
+Partial Order Total: $29.10
+Estimated delivery for available items: 2025-04-11
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - A4 paper: you requested 500, we currently have 272 in stock.
+  - Matte paper: you requested 1000, we currently have 0 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - A4 paper: expected by 2025-04-11
+  - Matte paper: expected by 2025-04-11
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $44,626.25"
+8,2025-04-07,44802.15000000001,4895.3,"Thank you for your interest in Beaver's Choice Paper Company!
+
+Unfortunately, we are unable to fulfill your order at this time due to insufficient stock for all requested items:
+
+  - A4 paper: you requested 3000, we currently have 772 in stock.
+  - Colored paper: you requested 2000, we currently have 188 in stock.
+
+We have arranged restocking and expect the following delivery dates:
+  - A4 paper: expected by 2025-04-14
+  - Colored paper: expected by 2025-04-14
+We apologise for the inconvenience. Please reach out once the restock arrives and we will prioritise your order.
+
+Current account cash balance: $44,333.65"
+9,2025-04-07,44802.15000000001,4895.3,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 200 x A4 paper at $0.05 each (2% bulk discount applied)  =  $9.80
+  - 100 x Glossy paper at $0.20 each  =  $20.00
+
+Partial Order Total: $29.80
+Estimated delivery for available items: 2025-04-11
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Recycled paper: you requested 50, we currently have 0 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Recycled paper: expected by 2025-04-11
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $44,323.45"
+13,2025-04-08,44323.450000000004,5152.899999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 500 x A4 paper at $0.05 each (2% bulk discount applied)  =  $24.50
+  - 200 x Cardstock at $0.15 each (2% bulk discount applied)  =  $29.40
+
+Order Total: $53.90
+Estimated delivery: 2025-04-12
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $44,377.35"
+12,2025-04-08,44323.450000000004,5152.899999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 200 x Cardstock at $0.15 each (2% bulk discount applied)  =  $29.40
+
+Partial Order Total: $29.40
+Estimated delivery for available items: 2025-04-12
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Standard copy paper: you requested 500, we currently have 0 in stock.
+  - Paper napkins: you requested 100, we currently have 0 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Standard copy paper: expected by 2025-04-12
+  - Paper napkins: expected by 2025-04-12
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $44,376.75"
+10,2025-04-08,44323.450000000004,5152.899999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+Unfortunately, we are unable to fulfill your order at this time due to insufficient stock for all requested items:
+
+  - Glossy paper: you requested 500, we currently have 487 in stock.
+  - Cardstock: you requested 300, we currently have 95 in stock.
+
+We have arranged restocking and expect the following delivery dates:
+  - Glossy paper: expected by 2025-04-12
+  - Cardstock: expected by 2025-04-12
+We apologise for the inconvenience. Please reach out once the restock arrives and we will prioritise your order.
+
+Current account cash balance: $44,201.75"
+11,2025-04-08,44323.450000000004,5152.899999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 500 x Glossy paper at $0.20 each (2% bulk discount applied)  =  $98.00
+  - 300 x A4 paper at $0.05 each (2% bulk discount applied)  =  $14.70
+
+Order Total: $112.70
+Estimated delivery: 2025-04-12
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $44,314.45"
+14,2025-04-09,44314.45,5127.899999999999,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 500 x Rolls of banner paper (36-inch width) at $2.50 each (2% bulk discount applied)  =  $1225.00
+
+Order Total: $1225.00
+Estimated delivery: 2025-04-13
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $45,539.45"
+15,2025-04-12,45539.45,3877.9,Thank you for contacting Beaver's Choice Paper Company. We were unable to identify specific paper products in your request. Please let us know which items and quantities you need and we will be happy to assist.
+16,2025-04-13,45539.45,3877.9,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We are pleased to confirm your order:
+
+  - 500 x A4 paper at $0.05 each (2% bulk discount applied)  =  $24.50
+  - 200 x Construction paper at $0.07 each (2% bulk discount applied)  =  $13.72
+  - 100 x Poster paper at $0.25 each  =  $25.00
+
+Order Total: $63.22
+Estimated delivery: 2025-04-17
+
+Your order is confirmed. We look forward to serving you!
+
+Current account cash balance: $45,602.67"
+17,2025-04-14,45602.67,3852.9,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 1000 x A4 paper at $0.05 each (5% bulk discount applied)  =  $47.50
+  - 500 x Colored paper at $0.10 each (3% bulk discount applied)  =  $48.50
+  - 500 x Paper plates at $0.10 each (3% bulk discount applied)  =  $48.50
+
+Partial Order Total: $144.50
+Estimated delivery for available items: 2025-04-18
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Paper cups: you requested 1000, we currently have 0 in stock.
+  - Paper napkins: you requested 2000, we currently have 500 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Paper cups: expected by 2025-04-18
+  - Paper napkins: expected by 2025-04-21
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $45,637.17"
+18,2025-04-14,45602.67,3852.9,"Thank you for your interest in Beaver's Choice Paper Company!
+
+We can partially fulfill your order. Below is what we are able to ship immediately:
+
+  - 500 x Cardstock at $0.15 each (3% bulk discount applied)  =  $72.75
+  - 200 x Colored paper at $0.10 each (3% bulk discount applied)  =  $19.40
+
+Partial Order Total: $92.15
+Estimated delivery for available items: 2025-04-18
+
+The following items are currently out of stock and cannot be included in this shipment:
+  - Standard copy paper: you requested 1000, we currently have 500 in stock.
+
+We have arranged restocking orders for the unavailable items. Expected restock dates:
+  - Standard copy paper: expected by 2025-04-18
+Please contact us once your preferred restock date has passed and we will be happy to process the remainder of your order.
+
+Current account cash balance: $45,709.32"
+19,2025-04-15,45709.32,3607.9,"Thank you for your interest in Beaver's Choice Paper Company!
+
+Unfortunately, we are unable to fulfill your order at this time due to insufficient stock for all requested items:
+
+  - A4 paper: you requested 2000, we currently have 500 in stock.
+  - Matte paper: you requested 1500, we currently have 1000 in stock.
+  - Cardstock: you requested 1000, we currently have 95 in stock.
+
+We have arranged restocking and expect the following delivery dates:
+  - A4 paper: expected by 2025-04-22
+  - Matte paper: expected by 2025-04-19
+  - Cardstock: expected by 2025-04-19
+We apologise for the inconvenience. Please reach out once the restock arrives and we will prioritise your order.
+
+Current account cash balance: $45,408.57"
+20,2025-04-17,45408.57,3818.65,Thank you for contacting Beaver's Choice Paper Company. We were unable to identify specific paper products in your request. Please let us know which items and quantities you need and we will be happy to assist.
