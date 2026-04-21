@@ -1,4 +1,5 @@
 """Orchestrator: coordinates the four specialist agents to handle customer requests."""
+import json
 import re
 from datetime import datetime
 from typing import Dict, List, Optional
@@ -11,14 +12,46 @@ from agents.agents import (
     get_financial_agent,
 )
 from agents.tools import (
-    inventory_check_tool,
     price_calculator_tool,
     sales_feasibility_tool,
     delivery_schedule_tool,
     process_sale_tool,
     process_reorder_tool,
-    cash_balance_tool,
 )
+
+
+# ---------------------------------------------------------------------------
+# Agent-invocation helpers
+# ---------------------------------------------------------------------------
+
+def _run_agent(agent, prompt: str):
+    """Invoke a pydantic-ai agent; returns RunResult or None on failure."""
+    try:
+        return agent.run_sync(prompt)
+    except Exception:
+        return None
+
+
+def _get_tool_return(run_result, tool_name: str):
+    """
+    Extract the structured return value of a named tool call from a RunResult.
+
+    pydantic-ai surfaces tool returns as ToolReturnPart instances inside the
+    all_messages() list.  The .content field is a JSON string in most versions.
+    """
+    if run_result is None:
+        return None
+    try:
+        for msg in run_result.all_messages():
+            for part in getattr(msg, "parts", []):
+                if getattr(part, "tool_name", None) == tool_name:
+                    content = part.content
+                    if isinstance(content, str):
+                        return json.loads(content)
+                    return content
+    except Exception:
+        pass
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -116,16 +149,23 @@ def call_multi_agent_system(customer_request: str, request_date: Optional[str] =
     items = parsed["items"]
     order_size = parsed["order_size"]
 
+    sales_agent = get_sales_agent()
+    quoting_agent = get_quoting_agent()
+    inv_agent = get_inventory_agent()
+
     # ------------------------------------------------------------------
-    # Step 1 — Inventory Agent: check stock for every requested item
+    # Step 1 — Sales Agent: check stock feasibility for every line item
     # ------------------------------------------------------------------
-    feasibility = sales_feasibility_tool(items, date_iso)
-    available_items = [
-        a for a in feasibility["availability"] if a["feasible"]
-    ]
-    unavailable_items = [
-        a for a in feasibility["availability"] if not a["feasible"]
-    ]
+    feas_run = _run_agent(
+        sales_agent,
+        f"Check sales feasibility for these items on {date_iso}: {json.dumps(items)}",
+    )
+    feasibility = _get_tool_return(feas_run, "sales_feasibility_tool")
+    if feasibility is None:
+        feasibility = sales_feasibility_tool(items, date_iso)
+
+    available_items = [a for a in feasibility["availability"] if a["feasible"]]
+    unavailable_items = [a for a in feasibility["availability"] if not a["feasible"]]
 
     # ------------------------------------------------------------------
     # Step 2 — Quoting Agent: price the items that can actually be shipped
@@ -137,34 +177,55 @@ def call_multi_agent_system(customer_request: str, request_date: Optional[str] =
     if available_items:
         ship_list = [{"item_name": a["item_name"], "quantity": a["requested_quantity"]}
                      for a in available_items]
-        pricing = price_calculator_tool(ship_list, order_size)
-        priced_items = pricing["items"]  # each has quantity, unit_price, final_price, discount_rate
+
+        price_run = _run_agent(
+            quoting_agent,
+            f"Calculate pricing for a {order_size} order: {json.dumps(ship_list)}",
+        )
+        pricing = _get_tool_return(price_run, "price_calculator_tool")
+        if pricing is None:
+            pricing = price_calculator_tool(ship_list, order_size)
+        priced_items = pricing["items"]
 
         # ------------------------------------------------------------------
         # Step 3 — Sales Agent: commit transactions and schedule delivery
         # ------------------------------------------------------------------
-        sale_result = process_sale_tool(priced_items, date_iso)
+        sale_run = _run_agent(
+            sales_agent,
+            f"Process the sale for these priced items on {date_iso}: {json.dumps(priced_items)}",
+        )
+        sale_result = _get_tool_return(sale_run, "process_sale_tool")
+        if sale_result is None:
+            sale_result = process_sale_tool(priced_items, date_iso)
         sale_total = sale_result["total_revenue"]
-        delivery_info = delivery_schedule_tool(ship_list, date_iso)
+
+        delivery_run = _run_agent(
+            sales_agent,
+            f"Schedule delivery for these items on {date_iso}: {json.dumps(ship_list)}",
+        )
+        delivery_info = _get_tool_return(delivery_run, "delivery_schedule_tool")
+        if delivery_info is None:
+            delivery_info = delivery_schedule_tool(ship_list, date_iso)
         delivery_date = delivery_info["estimated_delivery_date"]
 
     # ------------------------------------------------------------------
-    # Step 4 — Inventory Agent (reorders): arrange restocking for
-    #           items that could not be shipped
+    # Step 4 — Inventory Agent: arrange restocking for out-of-stock items
     # ------------------------------------------------------------------
     restock_dates: List[Dict] = []
     for item in unavailable_items:
-        reorder = process_reorder_tool(item["item_name"], item["requested_quantity"], date_iso)
+        reorder_run = _run_agent(
+            inv_agent,
+            f"Process a reorder for {item['item_name']}, "
+            f"quantity {item['requested_quantity']}, on {date_iso}",
+        )
+        reorder = _get_tool_return(reorder_run, "process_reorder_tool")
+        if reorder is None:
+            reorder = process_reorder_tool(item["item_name"], item["requested_quantity"], date_iso)
         if reorder.get("status") == "reorder_processed":
             restock_dates.append({
                 "item_name": item["item_name"],
                 "delivery_date": reorder["details"]["delivery_date"],
             })
-
-    # ------------------------------------------------------------------
-    # Step 5 — Financial Agent: confirm updated cash balance
-    # ------------------------------------------------------------------
-    cash_balance = cash_balance_tool(date_iso)
 
     # ------------------------------------------------------------------
     # Compose the customer-facing response from structured data
@@ -175,7 +236,6 @@ def call_multi_agent_system(customer_request: str, request_date: Optional[str] =
         sale_total=sale_total,
         delivery_date=delivery_date,
         restock_dates=restock_dates,
-        cash_balance=cash_balance,
         order_size=order_size,
     )
 
@@ -186,7 +246,6 @@ def _build_customer_response(
     sale_total: float,
     delivery_date: Optional[str],
     restock_dates: List[Dict],
-    cash_balance: float,
     order_size: str,
 ) -> str:
     """Build a clean, internally-consistent customer-facing response."""
@@ -278,5 +337,4 @@ def _build_customer_response(
                 "Please contact us to discuss alternative arrangements."
             )
 
-    lines.append(f"\nCurrent account cash balance: ${cash_balance:,.2f}")
     return "\n".join(lines)
